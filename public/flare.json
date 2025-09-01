@@ -1,0 +1,337 @@
+{
+    "name": "flare",
+    "children": [
+      {
+        "name": "Discover",
+        "size": 250,
+        "link": "<a href='https://www.lib4ri.ch/search'></a>"
+      },
+      {
+            "name": "Plan",
+            "children": [
+          {
+                  "name": "Institutional Support",
+                  "children": [
+                      {
+                        "name": "EAWAG",
+                        "size": 150,
+                        "link": "<a href='https://www.internal.eawag.ch/de/informatik/datenmanagement/research-data-management/'></a>"
+                      },
+                      {
+                        "name": "EMPA",
+                        "size": 150,
+                        "link": "<a href='https://www.empa.ch/web/s909/research-data-management'></a>"
+                      },
+                      {
+                        "name": "PSI",
+                        "size": 150,
+                        "link": "<a href='https://www.psi.ch/en/awi/data-curation-group'></a>"
+                      },
+                      {
+                        "name": "WSL",
+                        "size": 150,
+                        "link": "<a href='https://www.envidat.ch/#/services'></a>"
+                      }
+                              ]
+          },
+          {
+            "name": "Consulting Services",
+            "children": [
+                      {
+                        "name": "EAWAG",
+                        "size": 150,
+                        "link": "<a href='mailto:rdm@eawag.ch'></a>"
+                      },
+                      {
+                        "name": "EMPA",
+                        "size": 150,
+                        "link": "<a href='mailto:scientificit@empa.ch'_blank'></a>"
+                      },
+                      {
+                        "name": "PSI",
+                        "size": 150,
+                        "link": "<a href='https://www.psi.ch/en/awi/data-curation-group'_blank'></a>"
+                      },
+                      {
+                        "name": "WSL",
+                        "size": 150,
+                        "link": "<a href='mailto:envidat@wsl.ch'></a>"
+                      }
+                              ]
+          },
+          {
+            "name": "DMP Template",
+            "children": [
+                      {
+                        "name": "EAWAG",
+                        "size": 150,
+                        "link": "<a href='https://www.internal.eawag.ch/fileadmin_intranet/intranet/rechtsgrundlagen/wsg_regelungen/wsg/2020/dmp.pdf'></a>"
+                      },
+                      {
+                        "name": "EMPA",
+                        "size": 150,
+                        "link": "<a href='https://www.empa.ch/documents/10817006/0/Empa+DMP+Template+for+SNF/9e33c4e4-dbad-4371-8e05-fb5fd81dcf58'></a>"
+                      },
+                      {
+                        "name": "PSI",
+                        "size": 150,
+                        "link": "<a href='https://intranet.psi.ch/de/researchfunding/dmp'></a>"
+                      },
+                      {
+                        "name": "WSL",
+                        "size": 150,
+                        "link": "<a href='https://www.envidat.ch/#/dmp'></a>"
+                      }
+                              ]
+          },
+          {
+            "name": "DMP Review",
+            "children": [
+                      {
+                        "name": "EAWAG",
+                        "size": 150,
+                        "link": "<a href='mailto:rdm@eawag.ch'></a>"
+                      },
+                      {
+                        "name": "EMPA",
+                        "size": 150,
+                        "link": "<a href='mailto:scientificit@empa.ch'></a>"
+                      },
+                      {
+                        "name": "PSI",
+                        "size": 150,
+                        "link": "<a href='https://www.psi.ch/en/awi/data-curation-group'></a>"
+                      },
+                      {
+                        "name": "WSL",
+                        "size": 150,
+                        "link": "<a href='mailto:envidat@wsl.ch'></a>"
+                      }
+                              ]
+          }
+        ]
+      },
+      {
+        "name": "Collect",
+        "children": [
+          {
+            "name": "E-notebooks",
+            "children": [
+                      {
+                        "name": "EAWAG",
+                        "size": 150,
+                        "link": "<a href='https://www.lib4ri.ch/node/616'></a>"
+                      },
+                      {
+                        "name": "EMPA",
+                        "size": 150,
+                        "link": "<a href='https://www.empa.ch/web/s909/data-management-system-empa'></a>"
+                      },
+                      {
+                        "name": "PSI",
+                        "size": 150,
+                        "link": "<a href='https://www.psi.ch/en/awi/scilog'></a>"
+                      },
+                      {
+                        "name": "WSL",
+                        "size": 150,
+                        "link": "<a href='https://www.lib4ri.ch/node/617'></a>"
+                      }
+                              ]
+          },
+          {
+            "name": "Internal Storage",
+            "children": [
+                      {
+                        "name": "EAWAG",
+                        "size": 150,
+                        "link": "<a href='https://www.internal.eawag.ch/en/informatik/datenmanagement/datensicherung/'></a>"
+                      },
+                      {
+                        "name": "EMPA",
+                        "size": 150,
+                        "link": "<a href='https://www.empa.ch/documents/1138725/1145609/MHB+3.4.5+Backup+und+Restore_1+e.pdf/30803554-9fed-4182-a7da-a09ad1e63dd2'></a>"
+                      },
+                      {
+                        "name": "PSI",
+                        "size": 150,
+                        "link": "<a href='https://intranet.psi.ch/en/computing/it-systems-data-storage'></a>"
+                      },
+                      {
+                        "name": "WSL",
+                        "size": 150,
+                        "link": "<a href='https://intra.wsl.ch/de/it/services/file-server'></a>"
+                      }
+                              ]
+          },
+          {
+            "name": "Cloud Services",
+           "children": [
+                      {
+                        "name": "EAWAG",
+                        "size": 150,
+                        "link": "<a href='https://drive.switch.ch/index.php/login'></a>"
+                      },
+                      {
+                        "name": "EMPA",
+                        "size": 150,
+                        "link": "<a href='https://drive.switch.ch/index.php/login'></a>"
+                      },
+                      {
+                        "name": "PSI",
+                        "size": 150,
+                        "link": "<a href='https://intranet.psi.ch/en/computing/switchdrive'></a>"
+                      },
+                      {
+                        "name": "WSL",
+                        "size": 150,
+                        "link": "<a href='https://intra.wsl.ch/de/forschung/research-data-management-tools-services'></a>"
+                      }
+                              ]
+          }
+        ]
+      },
+      {
+        "name": "Process",
+        "children": [
+          {
+            "name": "Cluster Computing",
+            "children": [
+                      {
+                        "name": "EAWAG",
+                        "size": 150,
+                        "link": "<a href='https://www.internal.eawag.ch/en/it-services/support-administration/it-environment/hpc/'></a>"
+                      },
+                      {
+                        "name": "EMPA",
+                        "size": 150,
+                        "link": "<a href='https://www.empa.ch/web/hpc/overview'></a>"
+                      },
+                      {
+                        "name": "PSI",
+                        "size": 150,
+                        "link": "<a href='https://www.psi.ch/en/awi/dari'></a>"
+                      },
+                      {
+                        "name": "WSL",
+                        "size": 150,
+                        "link": "<a href='https://hyperion.wsl.ch/documentation-master/build/html/'></a>"
+                      }
+                              ]
+          },
+          {
+            "name": "Versioning",
+           "children": [
+                      {
+                        "name": "EAWAG",
+                        "size": 150,
+                        "link": "<a href='https://gitlab.eawag.ch/'></a>"
+                      },
+                      {
+                        "name": "EMPA",
+                        "size": 150,
+                        "link": "<a href='https://www.lib4ri.ch/node/701'></a>"
+                      },
+                      {
+                        "name": "PSI",
+                        "size": 150,
+                        "link": "<a href='https://www.lib4ri.ch/node/695'></a>"
+                      },
+                      {
+                        "name": "WSL",
+                        "size": 150,
+                        "link": "<a href='https://gitlabext.wsl.ch/'></a>"
+                      }
+                              ]
+          }
+        ]
+      },
+      
+      {
+        "name": "Share",
+        "children": [
+          {
+            "name": "Scientific Writing",
+                        "size": 150,
+                        "link": "<a href='https://www.lib4ri.ch/scientific-writing'></a>"
+          },
+          {
+            "name": "LLM's and AI",
+                        "size": 150,
+                        "link": "<a href='https://www.lib4ri.ch/llms-ai-tools'></a>"
+          },
+          {
+            "name": "Scientific Publishing",
+                        "size": 150,
+                        "link": "<a href='https://www.lib4ri.ch/scientific-publishing'></a>"
+          },
+          {
+            "name": "Open Access",
+                        "size": 150,
+                        "link": "<a href='https://www.lib4ri.ch/open-access'></a>"
+          },
+          {
+            "name": "Copyright and CC",
+                        "size": 150,
+                        "link": "<a href='https://www.lib4ri.ch/copyright-cc-licences'></a>"
+          },
+          {
+            "name": "Get a DOI",
+                        "size": 150,
+                        "link": "<a href='https://www.lib4ri.ch/get-doi'></a>"
+          },
+          {
+            "name": "Lit. Management",
+                        "size": 150,
+                        "link": "<a href='https://www.lib4ri.ch/literature-management'></a>"
+          },
+          {
+            "name": "Bibliometrics",
+                        "size": 150,
+                        "link": "<a href='https://www.lib4ri.ch/bibliometrics'></a>"
+          },
+          {
+            "name": "Plagerism Check",
+                        "size": 150,
+                        "link": "<a href='https://www.lib4ri.ch/plagiarism-check'></a>"
+          },
+          {
+            "name": "Increase Impact",
+                        "size": 150,
+                        "link": "<a href='https://www.lib4ri.ch/increase-your-visibility'></a>"
+          }
+        ]
+      },
+      {
+        "name": "Preserve",
+        "children": [
+          {
+            "name": "Data Repository",
+            "children": [
+                      {
+                        "name": "EAWAG",
+                        "size": 150,
+                        "link": "<a href='https://www.lib4ri.ch/node/619'></a>"
+                      },
+                      {
+                        "name": "EMPA",
+                        "size": 150,
+                        "link": "<a href='https://www.lib4ri.ch/node/620'></a>"
+                      },
+                      {
+                        "name": "PSI",
+                        "size": 150,
+                        "link": "<a href='https://www.psi.ch/en/awi/scicat'></a>"
+                      },
+                      {
+                        "name": "WSL",
+                        "size": 150,
+                        "link": "<a href='https://www.envidat.ch/'></a>"
+                      }
+                              ]
+          }
+        ]
+      }
+    ]
+  }
+  
