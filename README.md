@@ -1,8 +1,24 @@
-this is a navigation tool for rdm services in the ETH domain. hosted version can be found here: 
+# Lib4RI RDM Services Sunburst Visualization
 
-https://pages.gitlab.eawag.ch/rdm-nav-b7b63b/
+This is an interactive D3.js sunburst diagram showcasing the Research Data Management (RDM) services offered by Lib4RI and the four research institutes within the ETH Domain: Eawag, Empa, PSI, and WSL.
 
+## Overview
 
-original code was developed here:
+This visualization provides a hierarchical view of the RDM services and tools available across the institutes, aligned with the research data lifecycle phases:
 
-https://gitlab.eawag.ch/chase.nunez/rdm_sunburst
+* **Plan**: Data Management Plans (DMPs), FAIR principles
+* **Collect**: Data acquisition, formats, and metadata
+* **Process & Analyze**: Data processing, analysis tools
+* **Preserve & Share**: Data storage, repositories, publication
+* **Find & Reuse**: Data discovery, reuse, and citation.
+
+Each segment of the sunburst represents a specific service or tool, allowing users to explore the interconnectedness and offerings within each phase.
+
+## Getting Started
+
+1. this is a navigation tool for rdm services in the ETH domain. hosted version can be found here: https://pages.gitlab.eawag.ch/rdm-nav-b7b63b/
+2. original code was developed here: https://gitlab.eawag.ch/chase.nunez/rdm_sunburst
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
