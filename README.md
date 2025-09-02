@@ -18,7 +18,7 @@ There is quite a bit of overlap with the website erit large, so some trimming is
 
 ## Getting Started
 
-1. this is a navigation tool for rdm services in the ETH domain. hosted version can be found here: 
+1. hosted version can be found here: 
 
 https://pages.gitlab.eawag.ch/rdm-nav-b7b63b/
 
@@ -36,3 +36,7 @@ https://observablehq.com/@d3/zoomable-sunburst
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+## Next Steps
+
+In order to inc
