@@ -5,7 +5,6 @@ This is an interactive D3.js sunburst diagram showcasing the Research Data Manag
 This radial space-filling visualization was originally created by [John Stasko]{https://sites.cc.gatech.edu/gvu/ii/sunburst/} and traditionally shows the [cumulative values of subtrees]{https://eurostat.github.io/d3.sunburst/}. It is commonly used to visualize nested objects, in large part becuase it shows the mass of hidden things in each subsection.
 
 ## Overview
-
 This visualization provides a hierarchical view of the RDM services and tools available across the institutes, aligned with the research data lifecycle phases:
 
 * **Plan**: Data Management Plans (DMPs), FAIR principles
@@ -15,6 +14,7 @@ This visualization provides a hierarchical view of the RDM services and tools av
 * **Find & Reuse**: Data discovery, reuse, and citation.
 
 Each segment of the sunburst represents a specific service or tool, allowing users to explore the interconnectedness and offerings within each phase.
+There is quite a bit of overlap with the website erit large, so some trimming is clearly going to be necessary. 
 
 ## Getting Started
 
