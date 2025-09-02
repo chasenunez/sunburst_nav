@@ -2,6 +2,8 @@
 
 This is an interactive D3.js sunburst diagram showcasing the Research Data Management (RDM) services offered by Lib4RI and the four research institutes within the ETH Domain: Eawag, Empa, PSI, and WSL.
 
+This radial space-filling visualization was originally created by [John Stasko]{https://sites.cc.gatech.edu/gvu/ii/sunburst/} and traditionally shows the [cumulative values of subtrees]{https://eurostat.github.io/d3.sunburst/}. It is commonly used to visualize software packages (the size of source code within nested packages) and file systems (the size of files within nested folders).
+
 ## Overview
 
 This visualization provides a hierarchical view of the RDM services and tools available across the institutes, aligned with the research data lifecycle phases:
