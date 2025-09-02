@@ -39,4 +39,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Next Steps
 
-In order to inc
+In order to incorperate this into the Drupal site, we first need to have gitlab allow me to share via a iframe. Currently the app is hosted on gitlab, and is public for people to use. However, when used without authorization, there is a shibbpleth wall that is prevening new users from seeing it - even nested in an iframe. 
