@@ -16,8 +16,14 @@ Each segment of the sunburst represents a specific service or tool, allowing use
 
 ## Getting Started
 
-1. this is a navigation tool for rdm services in the ETH domain. hosted version can be found here: https://pages.gitlab.eawag.ch/rdm-nav-b7b63b/
-2. original code was developed here: https://gitlab.eawag.ch/chase.nunez/rdm_sunburst
+1. this is a navigation tool for rdm services in the ETH domain. hosted version can be found here: 
+
+https://pages.gitlab.eawag.ch/rdm-nav-b7b63b/
+
+
+2. original code was developed here: 
+
+https://gitlab.eawag.ch/chase.nunez/rdm_sunburst
 
 ## License
 
