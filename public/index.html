@@ -3,6 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <title>Research Lifecycle Sunburst</title>
+
+  <!-- Font Awesome (free) for home icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
     body {
       font-family: sans-serif;
@@ -24,6 +28,37 @@
       text-anchor: middle;
       dominant-baseline: middle;
     }
+
+    /* home icon container inside the SVG foreignObject */
+    .home-fo > div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    /* Font Awesome icon styling: 20% larger (≈1.68rem) */
+    .home-fo i.fa-solid {
+      font-size: 1.68rem;
+      line-height: 1;
+      color: #005564;
+      transition: transform 120ms ease;
+    }
+
+    /* hover/keyboard feedback */
+    .home-fo:hover i.fa-solid,
+    .home-fo:focus i.fa-solid {
+      transform: scale(1.08);
+    }
+
+    /* transition placeholder - main fade handled by d3 transitions */
+    .home-fo {
+      transition: opacity 700ms ease;
+    }
   </style>
 </head>
 <body>
@@ -37,21 +72,19 @@ d3.json("flare.json").then(data => {
   const customColors = ["#002640", "#005564", "#00918A", "#8ECD99", "#578261", "#D3C88F"];
   const color = d3.scaleOrdinal().range(customColors);
 
-const root = d3.hierarchy(data)
-  .sum(d => d.size || 0)
-  //.sort((a, b) => b.value - a.value);
+  const root = d3.hierarchy(data)
+    .sum(d => d.size || 0);
 
-d3.partition().size([2 * Math.PI, root.height + 1])(root);
-root.each(d => d.current = d);
+  d3.partition().size([2 * Math.PI, root.height + 1])(root);
+  root.each(d => d.current = d);
 
-const maxDepth = root.height; //
+  const maxDepth = root.height;
 
-const svg = d3.create("svg")
-  .attr("viewBox", () => {
-    const depthMargin = maxDepth * 105;
-    return [-width / 2 - depthMargin / 2, -width / 2 - depthMargin / 2, width + depthMargin, width + depthMargin];
-  })
-
+  const svg = d3.create("svg")
+    .attr("viewBox", () => {
+      const depthMargin = maxDepth * 105;
+      return [-width / 2 - depthMargin / 2, -width / 2 - depthMargin / 2, width + depthMargin, width + depthMargin];
+    })
     .style("font", "10px sans-serif");
 
   const defs = svg.append("defs");
@@ -84,47 +117,58 @@ const svg = d3.create("svg")
 
   const g = svg.append("g");
 
+  // Only include depths 1 and 2 (no third-level nodes)
+  const visibleNodes = root.descendants().slice(1).filter(d => d.depth < 3);
+
   const path = g.append("g")
-  .selectAll("path")
-  .data(root.descendants().slice(1).filter(d => d.depth < 3))  // <-- added filter
+    .selectAll("path")
+    .data(visibleNodes)
     .join("path")
       .attr("fill", d => {
-        while (d.depth > 1) d = d.parent;
-        return color(d.data.name);
+        let ancestor = d;
+        while (ancestor.depth > 1) ancestor = ancestor.parent;
+        return color(ancestor.data.name);
       })
-      // Show only level 1 at first
+      // Show only level 1 at first (depth 1 visible, depth 2 hidden)
       .attr("fill-opacity", d => d.depth === 1 ? 0.6 : 0)
-      .attr("pointer-events", d => d.depth > 0 ? "auto" : "none")
+      // INITIAL pointer-events: only depth-1 arcs are clickable on load
+      .attr("pointer-events", d => d.depth === 1 ? "auto" : "none")
       .attr("d", d => arc(d.current));
 
-  // Replace the existing click zoom behavior with the link-opening logic + zoom fallback
+  // click behavior: only act on arcs that are actually visible (fill-opacity > 0)
   path.on("click", (event, d) => {
-  if (d.data.link) {
-    // Extract URL from the link string (assuming it's an HTML anchor tag)
-    const urlMatch = d.data.link.match(/href=['"]([^'"]+)['"]/);
-    if (urlMatch && urlMatch[1]) {
-      window.open(urlMatch[1], "_blank");
-      event.stopPropagation(); // prevent zooming when opening link
+    const el = event.currentTarget;
+    const currentOpacity = +el.getAttribute("fill-opacity") || 0;
+    // If visually invisible, ignore clicks
+    if (currentOpacity === 0) {
+      event.stopPropagation();
       return;
     }
-  }
-  // No link: do zoom as normal
-  clicked(event, d);
-});
 
+    if (d.data.link) {
+      // Extract URL from the link string (assuming it's an HTML anchor tag)
+      const urlMatch = d.data.link.match(/href=['"]([^'"]+)['"]/);
+      if (urlMatch && urlMatch[1]) {
+        window.open(urlMatch[1], "_blank");
+        event.stopPropagation(); // prevent zooming when opening link
+        return;
+      }
+    }
+    // No link or no URL: do zoom as normal
+    clicked(event, d);
+  });
 
   path.append("title")
     .text(d => `${d.ancestors().map(d => d.data.name).reverse().join("/")}\n${format(d.value)}`);
 
   const label = g.append("g")
-  .attr("pointer-events", "none")
-  .attr("text-anchor", "middle")
-  .selectAll("text")
-  .data(root.descendants().slice(1).filter(d => d.depth < 3))  // <-- added filter
+    .attr("pointer-events", "none")
+    .attr("text-anchor", "middle")
+    .selectAll("text")
+    .data(visibleNodes)
     .join("text")
       .attr("dy", "0.35em")
       .attr("fill-opacity", d => d.depth === 1 ? 0.6 : 0)
-
       .attr("transform", d => labelTransform(d.current))
       .style("font-weight", d => d.depth === 1 ? "bold" : "normal")
       .style("font-size", d => {
@@ -141,26 +185,69 @@ const svg = d3.create("svg")
     .attr("pointer-events", "all")
     .on("click", clicked);
 
-  const centerGroup = g.append("g");
-
+  // --- CENTER RING (always visible) ---
   const arrowRadius = radius * 0.8;
   const arrowPath = d3.path();
   arrowPath.arc(0, 0, arrowRadius, -Math.PI / 2, 1.8 * Math.PI);
 
-  centerGroup.append("path")
+  const centerRing = g.append("path")
+    .attr("class", "center-ring")
     .attr("d", arrowPath.toString())
     .attr("fill", "none")
     .attr("stroke", "url(#circular-gradient)")
-    .attr("stroke-width", 20);
+    .attr("stroke-width", 20)
+    .attr("pointer-events", "none"); // decorative only
+
+  // centerGroup holds the home icon and optional center label
+  const centerGroup = g.append("g")
+    .attr("class", "center-group")
+    .style("display", "none"); // hidden while at root (ring remains visible)
 
   centerGroup.append("text")
     .attr("class", "center-label")
     .attr("y", 5)
     .attr("fill-opacity", 0.6)
-    .text(""); //research data life cycle
+    .text(""); // placeholder
+
+  // --- Add a Font Awesome home icon inside an SVG foreignObject ---
+  const homeSize = radius * 0.56; // diameter of the area for the icon
+  const homeFO = centerGroup.append("foreignObject")
+    .attr("class", "home-fo")
+    .attr("x", -homeSize / 2)
+    .attr("y", -homeSize / 2)
+    .attr("width", homeSize)
+    .attr("height", homeSize)
+    .style("display", "none")
+    .style("opacity", 0)
+    .attr("pointer-events", "none");
+
+  // Insert an xhtml div into the foreignObject to host the Font Awesome icon
+  homeFO.append("xhtml:div")
+    .html('<i class="fa-solid fa-house" aria-hidden="true" title="Home / Back"></i>');
+
+  // Click handler for the home foreignObject (go up one level)
+  homeFO.on("click", function(event) {
+    clicked(event, parent.datum());
+    event.stopPropagation();
+  });
 
   function clicked(event, p) {
     parent.datum(p.parent || root);
+
+    // toggle home icon visibility: show home icon only when we're not at root
+    if (p === root) {
+      homeFO.transition().duration(700).style("opacity", 0)
+        .on("end", () => {
+          homeFO.style("display", "none").attr("pointer-events", "none");
+          centerGroup.style("display", "none");
+        });
+    } else {
+      centerGroup.style("display", null);
+      homeFO.style("display", null)
+        .attr("pointer-events", "all")
+        .transition().duration(700)
+        .style("opacity", 1);
+    }
 
     root.each(d => d.target = {
       x0: Math.max(0, Math.min(1, (d.x0 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
@@ -182,6 +269,7 @@ const svg = d3.create("svg")
       .attr("fill-opacity", d => {
         return d.target.depth === 1 ? 0.6 : arcVisible(d.target) ? (d.children ? 0.6 : 0.4) : 0;
       })
+      // update pointer-events based on the *target* visibility (so after zoom they become clickable)
       .attr("pointer-events", d => {
         return d.target.depth === 1 ? "auto" : arcVisible(d.target) ? "auto" : "none";
       })
@@ -210,6 +298,10 @@ const svg = d3.create("svg")
     const y = (d.y0 + d.y1) / 2 * radius;
     return `rotate(${x - 90}) translate(${y},0) rotate(${x < 180 ? 0 : 180})`;
   }
+
+  // initial state: ring visible; centerGroup & homeFO hidden
+  centerGroup.style("display", "none");
+  homeFO.style("display", "none").style("opacity", 0).attr("pointer-events", "none");
 
   document.body.appendChild(svg.node());
 });
