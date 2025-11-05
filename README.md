@@ -23,20 +23,14 @@ There is quite a bit of overlap with the website erit large, so some trimming is
 https://pages.gitlab.eawag.ch/rdm-nav-b7b63b/
 
 
-2. original code was developed here: 
+2. code was developed here: 
 
 https://gitlab.eawag.ch/chase.nunez/rdm_sunburst
 
-3. forked code can be found here:
+3. inspiration code can be found here:
 
 https://observablehq.com/@d3/zoomable-sunburst
-
-
 
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
-
-## Next Steps
-
-In order to incorperate this into the Drupal site, we first need to have gitlab allow me to share via a iframe. Currently the app is hosted on gitlab, and is public for people to use. However, when used without authorization, there is a shibbpleth wall that is prevening new users from seeing it - even nested in an iframe. 
