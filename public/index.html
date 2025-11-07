@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>Research Lifecycle Sunburst</title>
 
-  <!-- Font Awesome (free) for home icon -->
+  <!-- Font Awesome home icon looks better than drawing a house-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
@@ -29,7 +29,7 @@
       dominant-baseline: middle;
     }
 
-    /* home icon container inside the SVG foreignObject */
+    /* home icon container inside the SVG foreignObject. the lib4ri logo also looks good, but the intent of the button is less clear that way*/
     .home-fo > div {
       display: flex;
       align-items: center;
@@ -41,7 +41,7 @@
       user-select: none;
     }
 
-    /* Font Awesome icon styling: 20% larger (≈1.68rem) */
+    /* Font Awesome icon styling to make it a bit more visible: 20% larger (≈1.68rem) */
     .home-fo i.fa-solid {
       font-size: 1.68rem;
       line-height: 1;
@@ -55,7 +55,7 @@
       transform: scale(1.08);
     }
 
-    /* transition placeholder - main fade handled by d3 transitions */
+    /* transition placeholder - main fade handled by d3 transitions. without this, the transition adding the home button and taking it away looks a little hacky*/
     .home-fo {
       transition: opacity 700ms ease;
     }
@@ -117,7 +117,7 @@ d3.json("flare.json").then(data => {
 
   const g = svg.append("g");
 
-  // Only include depths 1 and 2 (no third-level nodes)
+  // Only include depths 1 and 2 (no third-level nodes this time to keep the graphic from taking up too much space on the page)
   const visibleNodes = root.descendants().slice(1).filter(d => d.depth < 3);
 
   const path = g.append("g")
@@ -135,7 +135,7 @@ d3.json("flare.json").then(data => {
       .attr("pointer-events", d => d.depth === 1 ? "auto" : "none")
       .attr("d", d => arc(d.current));
 
-  // click behavior: only act on arcs that are actually visible (fill-opacity > 0)
+  // click behavior: only act on arcs that are actually visible (fill-opacity > 0). this was a bug that was found by FM. Thanks FM!
   path.on("click", (event, d) => {
     const el = event.currentTarget;
     const currentOpacity = +el.getAttribute("fill-opacity") || 0;
@@ -185,7 +185,7 @@ d3.json("flare.json").then(data => {
     .attr("pointer-events", "all")
     .on("click", clicked);
 
-  // --- CENTER RING (always visible) ---
+  // --- CENTER RING (always visible, because the addition of the disappearing home button also affected this originally) ---
   const arrowRadius = radius * 0.8;
   const arrowPath = d3.path();
   arrowPath.arc(0, 0, arrowRadius, -Math.PI / 2, 1.8 * Math.PI);
