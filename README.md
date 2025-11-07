@@ -27,8 +27,8 @@ https://pages.gitlab.eawag.ch/rdm-nav-b7b63b/
 
 https://gitlab.eawag.ch/chase.nunez/rdm_sunburst
 
-3. inspiration can be found here:
-
+3. D3.js inspiration can be found here:
+https://observablehq.com/@d3
 https://observablehq.com/@d3/zoomable-sunburst
 
 ## License
