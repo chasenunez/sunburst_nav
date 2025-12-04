@@ -1,5 +1,4 @@
 # Lib4RI RDM Services Sunburst Visualization
-
 This is an interactive D3.js sunburst diagram showcasing the Research Data Management (RDM) services offered by Lib4RI and the four research institutes within the ETH Domain: Eawag, Empa, PSI, and WSL.
 
 This radial space-filling visualization was originally created by [John Stasko](https://sites.cc.gatech.edu/gvu/ii/sunburst/) and traditionally shows the [cumulative values of subtrees](https://eurostat.github.io/d3.sunburst/). It is commonly used to visualize nested objects, in large part becuase it shows the mass of hidden things in each subsection.
