@@ -5,19 +5,22 @@
       "name": "Discover",
       "children": [
         {
-        "name": "Trainings",
-        "size": 150,
-        "link": "<a href='https://www.lib4ri.ch/research-data-management-training'></a>"
+          "name": "Trainings",
+          "size": 150,
+          "hovertext": "RDM trainings & Lead Campus",
+          "link": "<a href='https://www.lib4ri.ch/research-data-management-training'></a>"
         },
         {
-        "name": "Literature",
-        "size": 150,
-        "link": "<a href='https://www.lib4ri.ch/search?find='></a>"
+          "name": "Literature",
+          "size": 150,
+          "hovertext": "Integrated literature search",
+          "link": "<a href='https://www.lib4ri.ch/search?find='></a>"
         },
         {
-        "name": "Data",
-        "size": 150,
-        "link": "<a href='https://www.re3data.org/'></a>"
+          "name": "Data",
+          "size": 150,
+          "hovertext": "Data search across repositories",
+          "link": "<a href='https://www.re3data.org/'></a>"
         }
       ]
     },
@@ -27,21 +30,25 @@
         {
           "name": "Institutional Support",
           "size": 150,
+          "hovertext": "RDM support: offices & IT help",
           "link": "<a href='https://www.lib4ri.ch/institutional-support'></a>"
         },
         {
           "name": "Consulting Services",
           "size": 150,
+          "hovertext": "Expert RDM consultations & help",
           "link": "<a href='https://www.lib4ri.ch/consulting-services'></a>"
         },
         {
           "name": "DMP Template",
           "size": 150,
+          "hovertext": "DMP template generator & tips",
           "link": "<a href='https://www.lib4ri.ch/data-management-plans-dmps'></a>"
         },
         {
           "name": "DMP Review",
           "size": 150,
+          "hovertext": "DMP review & Lib4RI feedback",
           "link": "<a href='https://www.lib4ri.ch/data-management-plans-dmps'></a>"
         }
       ]
@@ -52,16 +59,19 @@
         {
           "name": "E-notebooks",
           "size": 150,
+          "hovertext": "E-notebooks for reproducibility",
           "link": "<a href='https://www.lib4ri.ch/electronic-lab-notebooks'></a>"
         },
         {
           "name": "Internal Storage",
           "size": 150,
+          "hovertext": "Institutional cloud & backups",
           "link": "<a href='https://www.lib4ri.ch/data-storage'></a>"
         },
         {
           "name": "Cloud Services",
           "size": 150,
+          "hovertext": "Cloud storage guidance and links",
           "link": "<a href='https://www.lib4ri.ch/data-storage'></a>"
         }
       ]
@@ -72,11 +82,13 @@
         {
           "name": "Cluster Computing",
           "size": 150,
+          "hovertext": "HPC cluster computing support",
           "link": "<a href='https://www.lib4ri.ch/cluster-computing-hpc'></a>"
         },
         {
           "name": "Versioning",
           "size": 150,
+          "hovertext": "Version control (Git + GitLab)",
           "link": "<a href='https://www.lib4ri.ch/version-control'></a>"
         }
       ]
@@ -87,26 +99,31 @@
         {
           "name": "Publishing Software",
           "size": 150,
+          "hovertext": "Publish data/code; repos & DOIs",
           "link": "<a href='https://www.lib4ri.ch/publishing-data-and-software'></a>"
         },
         {
           "name": "Sensitive Data",
           "size": 150,
+          "hovertext": "Sensitive data handling & ethics",
           "link": "<a href='https://www.lib4ri.ch/sensitive-data'></a>"
         },
         {
           "name": "Archiving",
           "size": 150,
+          "hovertext": "Long-term data preservation",
           "link": "<a href='https://www.lib4ri.ch/archiving'></a>"
         },
         {
           "name": "Increasing Impact",
           "size": 150,
+          "hovertext": "publish & share data for maximum engagement",
           "link": "<a href='https://www.lib4ri.ch/increasing-impact'></a>"
         },
         {
           "name": "Scientific Writing",
           "size": 150,
+          "hovertext": "writing tips & resources",
           "link": "<a href='https://www.lib4ri.ch/scientific-writing'></a>"
         }
       ]
@@ -117,6 +134,7 @@
         {
           "name": "Data Repository",
           "size": 150,
+          "hovertext": "Institutional & discipline repositories",
           "link": "<a href='https://www.lib4ri.ch/publishing-data-and-software'></a>"
         }
       ]

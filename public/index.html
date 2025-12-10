@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>Research Lifecycle Sunburst</title>
 
-  <!-- Font Awesome home icon looks better than drawing a house-->
+  <!-- Font Awesome home icon -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
@@ -117,7 +117,7 @@ d3.json("flare.json").then(data => {
 
   const g = svg.append("g");
 
-  // Only include depths 1 and 2 (no third-level nodes this time to keep the graphic from taking up too much space on the page)
+  // only include depths 1 and 2 (no third-level nodes this time to keep the graphic from taking up too much space on the page)
   const visibleNodes = root.descendants().slice(1).filter(d => d.depth < 3);
 
   const path = g.append("g")
@@ -158,8 +158,20 @@ d3.json("flare.json").then(data => {
     clicked(event, d);
   });
 
+  // --- REPLACED: use the new `hovertext` field from the JSON for the native browser tooltip and for aria-label ---
+  // If a node has `hovertext`, it will be shown. If it does not exist or is empty, nothing will appear.
+  // This replaces the previous behavior which showed the node path and the formatted size.
+
+  // Defensive: remove any pre-existing <title> nodes
+  path.selectAll("title").remove();
+
+  // Append title with text coming from d.data.hovertext
   path.append("title")
-    .text(d => `${d.ancestors().map(d => d.data.name).reverse().join("/")}\n${format(d.value)}`);
+    .text(d => (d.data && d.data.hovertext) ? d.data.hovertext : "");
+
+  // Add aria-label for better screen-reader support (removed if hovertext is missing)
+  path.attr("role", "img")
+    .attr("aria-label", d => (d.data && d.data.hovertext) ? d.data.hovertext : null);
 
   const label = g.append("g")
     .attr("pointer-events", "none")
