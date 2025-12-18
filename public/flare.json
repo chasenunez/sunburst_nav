@@ -90,6 +90,12 @@
           "size": 150,
           "hovertext": "Version control (Git + GitLab)",
           "link": "<a href='https://www.lib4ri.ch/version-control'></a>"
+        },
+        {
+          "name": "Text Data Mining",
+          "size": 150,
+          "hovertext": "Legally Using Unstructured Text Data",
+          "link": "<a href='https://www.lib4ri.ch/textdatamining'></a>"
         }
       ]
     },
