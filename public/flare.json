@@ -103,22 +103,22 @@
       "name": "Share",
       "children": [
         {
-          "name": "Publishing Software",
+          "name": "Publishing Code",
           "size": 150,
           "hovertext": "Publish data/code; repos & DOIs",
           "link": "<a href='https://www.lib4ri.ch/publishing-data-and-software'></a>"
+        },
+        {
+          "name": "Publishing Data",
+          "size": 150,
+          "hovertext": "Long-term data preservation",
+          "link": "<a href='https://www.lib4ri.ch/archiving'></a>"
         },
         {
           "name": "Sensitive Data",
           "size": 150,
           "hovertext": "Sensitive data handling & ethics",
           "link": "<a href='https://www.lib4ri.ch/sensitive-data'></a>"
-        },
-        {
-          "name": "Archiving",
-          "size": 150,
-          "hovertext": "Long-term data preservation",
-          "link": "<a href='https://www.lib4ri.ch/archiving'></a>"
         },
         {
           "name": "Increasing Impact",
@@ -131,17 +131,6 @@
           "size": 150,
           "hovertext": "writing tips & resources",
           "link": "<a href='https://www.lib4ri.ch/scientific-writing'></a>"
-        }
-      ]
-    },
-    {
-      "name": "Preserve",
-      "children": [
-        {
-          "name": "Data Repository",
-          "size": 150,
-          "hovertext": "Institutional & discipline repositories",
-          "link": "<a href='https://www.lib4ri.ch/publishing-data-and-software'></a>"
         }
       ]
     }
