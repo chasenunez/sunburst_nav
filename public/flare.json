@@ -20,7 +20,7 @@
           "name": "Data",
           "size": 150,
           "hovertext": "Data search across repositories",
-          "link": "<a href='https://www.re3data.org/'></a>"
+          "link": "<a href='https://www.lib4ri.ch/discover-data'></a>"
         }
       ]
     },
@@ -32,12 +32,6 @@
           "size": 150,
           "hovertext": "RDM support: offices & IT help",
           "link": "<a href='https://www.lib4ri.ch/institutional-support'></a>"
-        },
-        {
-          "name": "Consulting Services",
-          "size": 150,
-          "hovertext": "Expert RDM consultations & help",
-          "link": "<a href='https://www.lib4ri.ch/consulting-services'></a>"
         },
         {
           "name": "DMP Template",
@@ -106,13 +100,13 @@
           "name": "Publishing Code",
           "size": 150,
           "hovertext": "Publish data/code; repos & DOIs",
-          "link": "<a href='https://www.lib4ri.ch/publishing-data-and-software'></a>"
+          "link": "<a href='https://www.lib4ri.ch/publishing-code'></a>"
         },
         {
           "name": "Publishing Data",
           "size": 150,
           "hovertext": "Long-term data preservation",
-          "link": "<a href='https://www.lib4ri.ch/archiving'></a>"
+          "link": "<a href='https://www.lib4ri.ch/publishing-data'></a>"
         },
         {
           "name": "Sensitive Data",
@@ -125,12 +119,6 @@
           "size": 150,
           "hovertext": "publish & share data for maximum engagement",
           "link": "<a href='https://www.lib4ri.ch/increasing-impact'></a>"
-        },
-        {
-          "name": "Scientific Writing",
-          "size": 150,
-          "hovertext": "writing tips & resources",
-          "link": "<a href='https://www.lib4ri.ch/scientific-writing'></a>"
         }
       ]
     }
