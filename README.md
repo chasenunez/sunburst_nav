@@ -31,6 +31,14 @@ https://gitlab.eawag.ch/chase.nunez/rdm_sunburst
 https://observablehq.com/@d3
 https://observablehq.com/@d3/zoomable-sunburst
 
+
+## For testing before deployment
+## in terminal window:
+python3 -m http.server 8000
+
+## in browser window
+http://localhost:8000/index.html
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.

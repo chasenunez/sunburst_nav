@@ -69,6 +69,10 @@ d3.json("flare.json").then(data => {
   const radius = width / 6;
   const format = d3.format(",d");
 
+  // Toggle: when true, show both depths immediately; when false, show only depth 1 and reveal depth 2 on click
+  const SHOW_ALL_TO_BEGIN = true;
+
+
   const customColors = ["#002640", "#005564", "#00918A", "#8ECD99", "#578261", "#D3C88F"];
   const color = d3.scaleOrdinal().range(customColors);
 
@@ -130,9 +134,10 @@ d3.json("flare.json").then(data => {
         return color(ancestor.data.name);
       })
       // Show only level 1 at first (depth 1 visible, depth 2 hidden)
-      .attr("fill-opacity", d => d.depth === 1 ? 0.6 : 0)
+      .attr("fill-opacity", d => d.depth === 1 ? 0.6 : (SHOW_ALL_TO_BEGIN ? (d.children ? 0.6 : 0.4) : 0))//.attr("fill-opacity", d => d.depth === 1 ? 0.6 : 0)
       // INITIAL pointer-events: only depth-1 arcs are clickable on load
-      .attr("pointer-events", d => d.depth === 1 ? "auto" : "none")
+            // INITIAL pointer-events: only depth-1 arcs are clickable on load
+      .attr("pointer-events", d => d.depth === 1 ? "auto" : (SHOW_ALL_TO_BEGIN ? "auto" : "none")) //.attr("pointer-events", d => d.depth === 1 ? "auto" : "none")
       .attr("d", d => arc(d.current));
 
   // click behavior: only act on arcs that are actually visible (fill-opacity > 0). this was a bug that was found by FM. Thanks FM!
@@ -180,7 +185,7 @@ d3.json("flare.json").then(data => {
     .data(visibleNodes)
     .join("text")
       .attr("dy", "0.35em")
-      .attr("fill-opacity", d => d.depth === 1 ? 0.6 : 0)
+      .attr("fill-opacity", d => d.depth === 1 ? 0.6 : (SHOW_ALL_TO_BEGIN ? (d.children ? 0.6 : 0.4) : 0))//.attr("fill-opacity", d => d.depth === 1 ? 0.6 : 0)
       .attr("transform", d => labelTransform(d.current))
       .style("font-weight", d => d.depth === 1 ? "bold" : "normal")
       .style("font-size", d => {
@@ -290,6 +295,8 @@ d3.json("flare.json").then(data => {
     label.filter(function(d) {
       return +this.getAttribute("fill-opacity") || labelVisible(d.target);
     }).transition(t)
+      .attr("dy", "0.35em")
+      //.attr("fill-opacity", d => d.depth === 1 ? 0.6 : (SHOW_ALL_TO_BEGIN ? 0.4 : 0))
       .attr("fill-opacity", d => {
         if (!labelVisible(d.target)) return 0;
         return d.target.depth === 1 ? 0.7 : 0.4;
