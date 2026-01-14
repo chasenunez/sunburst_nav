@@ -33,10 +33,10 @@ https://observablehq.com/@d3/zoomable-sunburst
 
 
 ## For testing before deployment
-## in terminal window:
+### in terminal window:
 python3 -m http.server 8000
 
-## in browser window
+### in browser window
 http://localhost:8000/index.html
 
 ## License
