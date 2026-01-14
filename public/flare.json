@@ -34,15 +34,9 @@
           "link": "<a href='https://www.lib4ri.ch/institutional-support'></a>"
         },
         {
-          "name": "DMP Template",
+          "name": "Data Management Plans",
           "size": 150,
           "hovertext": "DMP template generator & tips",
-          "link": "<a href='https://www.lib4ri.ch/data-management-plans-dmps'></a>"
-        },
-        {
-          "name": "DMP Review",
-          "size": 150,
-          "hovertext": "DMP review & Lib4RI feedback",
           "link": "<a href='https://www.lib4ri.ch/data-management-plans-dmps'></a>"
         }
       ]
@@ -57,13 +51,7 @@
           "link": "<a href='https://www.lib4ri.ch/electronic-lab-notebooks'></a>"
         },
         {
-          "name": "Internal Storage",
-          "size": 150,
-          "hovertext": "Institutional cloud & backups",
-          "link": "<a href='https://www.lib4ri.ch/data-storage'></a>"
-        },
-        {
-          "name": "Cloud Services",
+          "name": "Cloud Storage",
           "size": 150,
           "hovertext": "Cloud storage guidance and links",
           "link": "<a href='https://www.lib4ri.ch/data-storage'></a>"
