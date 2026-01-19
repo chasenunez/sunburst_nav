@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Research Lifecycle Sunburst</title>
+  <title>Research Lifecycle Sunburst — No animations</title>
 
   <!-- Font Awesome home icon -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -29,7 +29,7 @@
       dominant-baseline: middle;
     }
 
-    /* home icon container inside the SVG foreignObject. the lib4ri logo also looks good, but the intent of the button is less clear that way*/
+    /* home icon container inside the SVG foreignObject */
     .home-fo > div {
       display: flex;
       align-items: center;
@@ -41,23 +41,22 @@
       user-select: none;
     }
 
-    /* FontAwesome icon styling to make it a bit more visible: 20% larger (≈1.68rem) */
+    /* FontAwesome icon styling -- removed transition to avoid animation */
     .home-fo i.fa-solid {
       font-size: 1.68rem;
       line-height: 1;
       color: #005564;
-      transition: transform 120ms ease;
+      /* transition removed to silence hover animation */
     }
 
-    /* hover/keyboard feedback */
+    /* hover/keyboard feedback: still allowed via transform but without a transition it's instant */
     .home-fo:hover i.fa-solid,
     .home-fo:focus i.fa-solid {
       transform: scale(1.08);
     }
 
-    /* transition placeholder - main fade handled by d3 transitions. without this, the transition adding the home button and taking it away looks a little hacky*/
+    /* removed CSS transition here so opacity changes are immediate (no fade) */
     .home-fo {
-      transition: opacity 700ms ease;
     }
   </style>
 </head>
@@ -71,7 +70,6 @@ d3.json("flare.json").then(data => {
 
   // Toggle: when true, show both depths immediately; when false, show only depth 1 and reveal depth 2 on click
   const SHOW_ALL_TO_BEGIN = true;
-
 
   const customColors = ["#002640", "#005564", "#00918A", "#8ECD99", "#578261", "#D3C88F"];
   const color = d3.scaleOrdinal().range(customColors);
@@ -121,7 +119,7 @@ d3.json("flare.json").then(data => {
 
   const g = svg.append("g");
 
-  // only include depths 1 and 2 (no third-level nodes this time to keep the graphic from taking up too much space on the page)
+  // only include depths 1 and 2
   const visibleNodes = root.descendants().slice(1).filter(d => d.depth < 3);
 
   const path = g.append("g")
@@ -134,13 +132,12 @@ d3.json("flare.json").then(data => {
         return color(ancestor.data.name);
       })
       // Show only level 1 at first (depth 1 visible, depth 2 hidden)
-      .attr("fill-opacity", d => d.depth === 1 ? 0.6 : (SHOW_ALL_TO_BEGIN ? (d.children ? 0.6 : 0.4) : 0))//.attr("fill-opacity", d => d.depth === 1 ? 0.6 : 0)
+      .attr("fill-opacity", d => d.depth === 1 ? 0.6 : (SHOW_ALL_TO_BEGIN ? (d.children ? 0.6 : 0.4) : 0))
       // INITIAL pointer-events: only depth-1 arcs are clickable on load
-            // INITIAL pointer-events: only depth-1 arcs are clickable on load
-      .attr("pointer-events", d => d.depth === 1 ? "auto" : (SHOW_ALL_TO_BEGIN ? "auto" : "none")) //.attr("pointer-events", d => d.depth === 1 ? "auto" : "none")
+      .attr("pointer-events", d => d.depth === 1 ? "auto" : (SHOW_ALL_TO_BEGIN ? "auto" : "none"))
       .attr("d", d => arc(d.current));
 
-  // click behavior: only act on arcs that are actually visible (fill-opacity > 0). this was a bug that was found by FM. Thanks FM!
+  // click behavior: only act on arcs that are actually visible
   path.on("click", (event, d) => {
     const el = event.currentTarget;
     const currentOpacity = +el.getAttribute("fill-opacity") || 0;
@@ -163,10 +160,6 @@ d3.json("flare.json").then(data => {
     clicked(event, d);
   });
 
-  // --- REPLACED: use the new `hovertext` field from the JSON for the native browser tooltip and for aria-label ---
-  // If a node has `hovertext`, it will be shown. If it does not exist or is empty, nothing will appear.
-  // This replaces the previous behavior which showed the node path and the formatted size.
-
   // Defensive: remove any pre-existing <title> nodes
   path.selectAll("title").remove();
 
@@ -185,7 +178,7 @@ d3.json("flare.json").then(data => {
     .data(visibleNodes)
     .join("text")
       .attr("dy", "0.35em")
-      .attr("fill-opacity", d => d.depth === 1 ? 0.6 : (SHOW_ALL_TO_BEGIN ? (d.children ? 0.6 : 0.4) : 0))//.attr("fill-opacity", d => d.depth === 1 ? 0.6 : 0)
+      .attr("fill-opacity", d => d.depth === 1 ? 0.6 : (SHOW_ALL_TO_BEGIN ? (d.children ? 0.6 : 0.4) : 0))
       .attr("transform", d => labelTransform(d.current))
       .style("font-weight", d => d.depth === 1 ? "bold" : "normal")
       .style("font-size", d => {
@@ -202,7 +195,7 @@ d3.json("flare.json").then(data => {
     .attr("pointer-events", "all")
     .on("click", clicked);
 
-  // --- CENTER RING (always visible, because the addition of the disappearing home button also affected this originally) ---
+  // --- CENTER RING (always visible) ---
   const arrowRadius = radius * 0.8;
   const arrowPath = d3.path();
   arrowPath.arc(0, 0, arrowRadius, -Math.PI / 2, 1.8 * Math.PI);
@@ -252,20 +245,20 @@ d3.json("flare.json").then(data => {
     parent.datum(p.parent || root);
 
     // toggle home icon visibility: show home icon only when we're not at root
+    // --- made instant: no transitions/fades ---
     if (p === root) {
-      homeFO.transition().duration(700).style("opacity", 0)
-        .on("end", () => {
-          homeFO.style("display", "none").attr("pointer-events", "none");
-          centerGroup.style("display", "none");
-        });
+      homeFO.style("opacity", 0)
+        .style("display", "none")
+        .attr("pointer-events", "none");
+      centerGroup.style("display", "none");
     } else {
       centerGroup.style("display", null);
       homeFO.style("display", null)
         .attr("pointer-events", "all")
-        .transition().duration(700)
         .style("opacity", 1);
     }
 
+    // compute target coordinates for each node (same as original)
     root.each(d => d.target = {
       x0: Math.max(0, Math.min(1, (d.x0 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
       x1: Math.max(0, Math.min(1, (d.x1 - p.x0) / (p.x1 - p.x0))) * 2 * Math.PI,
@@ -273,35 +266,33 @@ d3.json("flare.json").then(data => {
       y1: Math.max(0, d.y1 - p.depth)
     });
 
-    const t = svg.transition().duration(750);
+    // --- INSTANTLY apply the target state (no animation) ---
+    // set current = target immediately
+    root.each(d => d.current = d.target);
 
-    path.transition(t)
-      .tween("data", d => {
-        const i = d3.interpolate(d.current, d.target);
-        return t => d.current = i(t);
-      })
+    // update arcs immediately
+    path
       .filter(function(d) {
         return +this.getAttribute("fill-opacity") || arcVisible(d.target);
       })
       .attr("fill-opacity", d => {
         return d.target.depth === 1 ? 0.6 : arcVisible(d.target) ? (d.children ? 0.6 : 0.4) : 0;
       })
-      // update pointer-events based on the *target* visibility (so after zoom they become clickable)
       .attr("pointer-events", d => {
         return d.target.depth === 1 ? "auto" : arcVisible(d.target) ? "auto" : "none";
       })
-      .attrTween("d", d => () => arc(d.current));
+      .attr("d", d => arc(d.current));
 
+    // update labels immediately
     label.filter(function(d) {
       return +this.getAttribute("fill-opacity") || labelVisible(d.target);
-    }).transition(t)
+    })
       .attr("dy", "0.35em")
-      //.attr("fill-opacity", d => d.depth === 1 ? 0.6 : (SHOW_ALL_TO_BEGIN ? 0.4 : 0))
       .attr("fill-opacity", d => {
         if (!labelVisible(d.target)) return 0;
         return d.target.depth === 1 ? 0.7 : 0.4;
       })
-      .attrTween("transform", d => () => labelTransform(d.current));
+      .attr("transform", d => labelTransform(d.current));
   }
 
   function arcVisible(d) {
