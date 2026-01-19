@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Research Lifecycle Sunburst — No animations</title>
+  <title>Research Lifecycle Sunburst — No animations, smart link behavior</title>
 
   <!-- Font Awesome home icon -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -55,7 +55,7 @@
       transform: scale(1.08);
     }
 
-    /* removed CSS transition here so opacity changes are immediate (no fade) */
+    /* no CSS transition so opacity changes are immediate (no fade) */
     .home-fo {
     }
   </style>
@@ -148,15 +148,50 @@ d3.json("flare.json").then(data => {
     }
 
     if (d.data.link) {
-      // Extract URL from the link string (assuming it's an HTML anchor tag)
-      const urlMatch = d.data.link.match(/href=['"]([^'"]+)['"]/);
-      if (urlMatch && urlMatch[1]) {
-        window.open(urlMatch[1], "_blank");
-        event.stopPropagation(); // prevent zooming when opening link
+      // Support two possible formats: an HTML anchor string (e.g. "<a href='...'>") or a raw URL string.
+      let raw = d.data.link;
+      // attempt to extract href from an anchor tag
+      const hrefMatch = raw.match(/href=['"]([^'"]+)['"]/i);
+      let url = hrefMatch && hrefMatch[1] ? hrefMatch[1].trim() : raw.trim();
+
+      try {
+        // Resolve relative URLs against the current document location
+        const resolved = new URL(url, location.href);
+        const protocol = resolved.protocol; // e.g. "https:", "mailto:"
+        const hostname = resolved.hostname; // e.g. "lib4ri.ch" or "sub.lib4ri.ch"
+
+        // mailto: and tel: should just navigate in the same window
+        if (protocol === "mailto:" || protocol === "tel:") {
+          location.href = url;
+          event.stopPropagation();
+          return;
+        }
+
+        // Links that belong to lib4ri.ch (including subdomains) open in the same window
+        if (hostname && hostname.endsWith("lib4ri.ch")) {
+          // use location.href so it replaces current page in same tab/window
+          location.href = resolved.href;
+          event.stopPropagation();
+          return;
+        }
+
+        // All other links open in a new tab (safety flags)
+        // we try to pass noopener/noreferrer in the features string; some browsers ignore this,
+        // so we also set opener to null after opening where possible.
+        const newWin = window.open(resolved.href, "_blank", "noopener,noreferrer");
+        try { if (newWin) newWin.opener = null; } catch(e) { /* ignore */ }
+        event.stopPropagation();
+        return;
+      } catch (err) {
+        // If URL construction failed (malformed URL), open as external in new tab as a fallback
+        const newWin = window.open(url, "_blank", "noopener,noreferrer");
+        try { if (newWin) newWin.opener = null; } catch(e) { /* ignore */ }
+        event.stopPropagation();
         return;
       }
     }
-    // No link or no URL: do zoom as normal
+
+    // No link or no URL: do zoom as normal (instant, no animation)
     clicked(event, d);
   });
 
@@ -245,7 +280,7 @@ d3.json("flare.json").then(data => {
     parent.datum(p.parent || root);
 
     // toggle home icon visibility: show home icon only when we're not at root
-    // --- made instant: no transitions/fades ---
+    // --- instant change (no transitions/fades) ---
     if (p === root) {
       homeFO.style("opacity", 0)
         .style("display", "none")
@@ -267,7 +302,6 @@ d3.json("flare.json").then(data => {
     });
 
     // --- INSTANTLY apply the target state (no animation) ---
-    // set current = target immediately
     root.each(d => d.current = d.target);
 
     // update arcs immediately
