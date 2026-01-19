@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Research Lifecycle Sunburst — No animations, smart link behavior</title>
+  <title>Research Lifecycle Sunburst — Depth-2 only clicks, no animations</title>
 
   <!-- Font Awesome home icon -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -133,11 +133,11 @@ d3.json("flare.json").then(data => {
       })
       // Show only level 1 at first (depth 1 visible, depth 2 hidden)
       .attr("fill-opacity", d => d.depth === 1 ? 0.6 : (SHOW_ALL_TO_BEGIN ? (d.children ? 0.6 : 0.4) : 0))
-      // INITIAL pointer-events: only depth-1 arcs are clickable on load
-      .attr("pointer-events", d => d.depth === 1 ? "auto" : (SHOW_ALL_TO_BEGIN ? "auto" : "none"))
+      // IMPORTANT: Depth-1 parents are intentionally non-clickable. Only depth-2 children may be clickable.
+      .attr("pointer-events", d => (d.depth === 2 && SHOW_ALL_TO_BEGIN) ? "auto" : (d.depth === 2 ? "none" : "none"))
       .attr("d", d => arc(d.current));
 
-  // click behavior: only act on arcs that are actually visible
+  // click behavior: only act on arcs that are actually visible AND are depth 2
   path.on("click", (event, d) => {
     const el = event.currentTarget;
     const currentOpacity = +el.getAttribute("fill-opacity") || 0;
@@ -147,6 +147,13 @@ d3.json("flare.json").then(data => {
       return;
     }
 
+    // If not a depth-2 node, do nothing (depth-1 parents now inert)
+    if (d.depth !== 2) {
+      event.stopPropagation();
+      return;
+    }
+
+    // From here on we only handle depth-2 nodes.
     if (d.data.link) {
       // Support two possible formats: an HTML anchor string (e.g. "<a href='...'>") or a raw URL string.
       let raw = d.data.link;
@@ -176,8 +183,6 @@ d3.json("flare.json").then(data => {
         }
 
         // All other links open in a new tab (safety flags)
-        // we try to pass noopener/noreferrer in the features string; some browsers ignore this,
-        // so we also set opener to null after opening where possible.
         const newWin = window.open(resolved.href, "_blank", "noopener,noreferrer");
         try { if (newWin) newWin.opener = null; } catch(e) { /* ignore */ }
         event.stopPropagation();
@@ -191,7 +196,7 @@ d3.json("flare.json").then(data => {
       }
     }
 
-    // No link or no URL: do zoom as normal (instant, no animation)
+    // No link or no URL: do zoom as normal (instant, no animation) — but only for depth-2 nodes.
     clicked(event, d);
   });
 
@@ -312,8 +317,10 @@ d3.json("flare.json").then(data => {
       .attr("fill-opacity", d => {
         return d.target.depth === 1 ? 0.6 : arcVisible(d.target) ? (d.children ? 0.6 : 0.4) : 0;
       })
+      // keep depth-1 non-clickable; only depth-2 that are visible get pointer-events:"auto"
       .attr("pointer-events", d => {
-        return d.target.depth === 1 ? "auto" : arcVisible(d.target) ? "auto" : "none";
+        if (d.target.depth === 1) return "none";
+        return arcVisible(d.target) && d.target.depth === 2 ? "auto" : "none";
       })
       .attr("d", d => arc(d.current));
 
