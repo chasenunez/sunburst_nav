@@ -155,46 +155,75 @@ d3.json("flare.json").then(data => {
 
     // From here on we only handle depth-2 nodes.
     if (d.data.link) {
-      // Support two possible formats: an HTML anchor string (e.g. "<a href='...'>") or a raw URL string.
-      let raw = d.data.link;
-      // attempt to extract href from an anchor tag
-      const hrefMatch = raw.match(/href=['"]([^'"]+)['"]/i);
-      let url = hrefMatch && hrefMatch[1] ? hrefMatch[1].trim() : raw.trim();
+  let raw = d.data.link;
+  const hrefMatch = raw.match(/href=['"]([^'"]+)['"]/i);
+  let url = hrefMatch && hrefMatch[1] ? hrefMatch[1].trim() : raw.trim();
 
+  try {
+    const resolved = new URL(url, location.href);
+    const protocol = resolved.protocol; // "https:", "mailto:", etc.
+    const hostname = resolved.hostname; // e.g. "lib4ri.ch"
+
+    // Prevent default link handling if this code is inside a click handler
+    try { event.preventDefault(); } catch (e) { /* ignore if event not available */ }
+    try { event.stopPropagation(); } catch (e) { /* ignore */ }
+
+    // Helper to navigate the top-level browsing context (with fallbacks)
+    const navigateTop = (href) => {
       try {
-        // Resolve relative URLs against the current document location
-        const resolved = new URL(url, location.href);
-        const protocol = resolved.protocol; // e.g. "https:", "mailto:"
-        const hostname = resolved.hostname; // e.g. "lib4ri.ch" or "sub.lib4ri.ch"
-
-        // mailto: and tel: should just navigate in the same window
-        if (protocol === "mailto:" || protocol === "tel:") {
-          location.href = url;
-          event.stopPropagation();
-          return;
+        // Prefer assigning top.location.href (navigates same browser window)
+        if (window.top && window.top !== window) {
+          window.top.location.href = href;
+        } else {
+          // If already top, just assign window.location
+          window.location.href = href;
         }
-
-        // Links that belong to lib4ri.ch (including subdomains) open in the same window
-        if (hostname && hostname.endsWith("lib4ri.ch")) {
-          // use location.href so it replaces current page in same tab/window
-          location.href = resolved.href;
-          event.stopPropagation();
-          return;
-        }
-
-        // All other links open in a new tab (safety flags)
-        const newWin = window.open(resolved.href, "_blank", "noopener,noreferrer");
-        try { if (newWin) newWin.opener = null; } catch(e) { /* ignore */ }
-        event.stopPropagation();
-        return;
+        return true;
       } catch (err) {
-        // If URL construction failed (malformed URL), open as external in new tab as a fallback
-        const newWin = window.open(url, "_blank", "noopener,noreferrer");
-        try { if (newWin) newWin.opener = null; } catch(e) { /* ignore */ }
-        event.stopPropagation();
-        return;
+        // Some sandbox/CSP situations may throw. Try window.open("_top") as fallback.
+        try {
+          const popup = window.open(href, "_top");
+          if (popup) {
+            try { popup.opener = null; } catch(e) {}
+            return true;
+          }
+        } catch(e) {}
+        return false;
       }
+    };
+
+    // mailto: and tel: -> top window navigation (opens mail client / phone handler)
+    if (protocol === "mailto:" || protocol === "tel:") {
+      navigateTop(url);
+      return;
     }
+
+    // Links to lib4ri.ch (same site or subdomains) -> navigate the top window
+    if (hostname && hostname.endsWith("lib4ri.ch")) {
+      // prefer top navigation (replaces current page in same browser window)
+      const ok = navigateTop(resolved.href);
+      if (!ok) {
+        // last-resort: open in new tab
+        const newWin = window.open(resolved.href, "_blank", "noopener,noreferrer");
+        try { if (newWin) newWin.opener = null; } catch(e) {}
+      }
+      return;
+    }
+
+    // Other (external) links -> open in a new tab for safety
+    const newWin = window.open(resolved.href, "_blank", "noopener,noreferrer");
+    try { if (newWin) newWin.opener = null; } catch(e) {}
+    return;
+
+  } catch (err) {
+    // URL parse failed -> try to open externally in new tab
+    try { event.preventDefault(); event.stopPropagation(); } catch(e) {}
+    const newWin = window.open(url, "_blank", "noopener,noreferrer");
+    try { if (newWin) newWin.opener = null; } catch(e) {}
+    return;
+  }
+}
+
 
     // No link or no URL: do zoom as normal (instant, no animation) — but only for depth-2 nodes.
     clicked(event, d);
