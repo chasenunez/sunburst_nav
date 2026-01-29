@@ -155,75 +155,68 @@ d3.json("flare.json").then(data => {
 
     // From here on we only handle depth-2 nodes.
     if (d.data.link) {
-  let raw = d.data.link;
-  const hrefMatch = raw.match(/href=['"]([^'"]+)['"]/i);
-  let url = hrefMatch && hrefMatch[1] ? hrefMatch[1].trim() : raw.trim();
+      let raw = d.data.link;
+      const hrefMatch = raw.match(/href=['"]([^'"]+)['"]/i);
+      let url = hrefMatch && hrefMatch[1] ? hrefMatch[1].trim() : raw.trim();
 
-  try {
-    const resolved = new URL(url, location.href);
-    const protocol = resolved.protocol; // "https:", "mailto:", etc.
-    const hostname = resolved.hostname; // e.g. "lib4ri.ch"
-
-    // Prevent default link handling if this code is inside a click handler
-    try { event.preventDefault(); } catch (e) { /* ignore if event not available */ }
-    try { event.stopPropagation(); } catch (e) { /* ignore */ }
-
-    // Helper to navigate the top-level browsing context (with fallbacks)
-    const navigateTop = (href) => {
       try {
-        // Prefer assigning top.location.href (navigates same browser window)
-        if (window.top && window.top !== window) {
-          window.top.location.href = href;
-        } else {
-          // If already top, just assign window.location
-          window.location.href = href;
-        }
-        return true;
-      } catch (err) {
-        // Some sandbox/CSP situations may throw. Try window.open("_top") as fallback.
-        try {
-          const popup = window.open(href, "_top");
-          if (popup) {
-            try { popup.opener = null; } catch(e) {}
+        const resolved = new URL(url, location.href);
+        const protocol = resolved.protocol; // "https:", "mailto:", etc.
+        const hostname = resolved.hostname; // e.g. "lib4ri.ch"
+
+        // Prevent default link handling if this code is inside a click handler
+        try { event.preventDefault(); } catch (e) { /* ignore if event not available */ }
+        try { event.stopPropagation(); } catch (e) { /* ignore */ }
+
+        // Helper to navigate the top-level browsing context (with fallbacks)
+        const navigateTop = (href) => {
+          try {
+            if (window.top && window.top !== window) {
+              window.top.location.href = href;
+            } else {
+              window.location.href = href;
+            }
             return true;
+          } catch (err) {
+            try {
+              const popup = window.open(href, "_top");
+              if (popup) {
+                try { popup.opener = null; } catch(e) {}
+                return true;
+              }
+            } catch(e) {}
+            return false;
           }
-        } catch(e) {}
-        return false;
-      }
-    };
+        };
 
-    // mailto: and tel: -> top window navigation (opens mail client / phone handler)
-    if (protocol === "mailto:" || protocol === "tel:") {
-      navigateTop(url);
-      return;
-    }
+        // mailto: and tel: -> top window navigation (opens mail client / phone handler)
+        if (protocol === "mailto:" || protocol === "tel:") {
+          navigateTop(url);
+          return;
+        }
 
-    // Links to lib4ri.ch (same site or subdomains) -> navigate the top window
-    if (hostname && hostname.endsWith("lib4ri.ch")) {
-      // prefer top navigation (replaces current page in same browser window)
-      const ok = navigateTop(resolved.href);
-      if (!ok) {
-        // last-resort: open in new tab
+        // Links to lib4ri.ch (same site or subdomains) -> navigate the top window
+        if (hostname && hostname.endsWith("lib4ri.ch")) {
+          const ok = navigateTop(resolved.href);
+          if (!ok) {
+            const newWin = window.open(resolved.href, "_blank", "noopener,noreferrer");
+            try { if (newWin) newWin.opener = null; } catch(e) {}
+          }
+          return;
+        }
+
+        // Other (external) links -> open in a new tab for safety
         const newWin = window.open(resolved.href, "_blank", "noopener,noreferrer");
         try { if (newWin) newWin.opener = null; } catch(e) {}
+        return;
+
+      } catch (err) {
+        try { event.preventDefault(); event.stopPropagation(); } catch(e) {}
+        const newWin = window.open(url, "_blank", "noopener,noreferrer");
+        try { if (newWin) newWin.opener = null; } catch(e) {}
+        return;
       }
-      return;
     }
-
-    // Other (external) links -> open in a new tab for safety
-    const newWin = window.open(resolved.href, "_blank", "noopener,noreferrer");
-    try { if (newWin) newWin.opener = null; } catch(e) {}
-    return;
-
-  } catch (err) {
-    // URL parse failed -> try to open externally in new tab
-    try { event.preventDefault(); event.stopPropagation(); } catch(e) {}
-    const newWin = window.open(url, "_blank", "noopener,noreferrer");
-    try { if (newWin) newWin.opener = null; } catch(e) {}
-    return;
-  }
-}
-
 
     // No link or no URL: do zoom as normal (instant, no animation) — but only for depth-2 nodes.
     clicked(event, d);
@@ -262,7 +255,11 @@ d3.json("flare.json").then(data => {
     .attr("r", radius)
     .attr("fill", "white")
     .attr("pointer-events", "all")
-    .on("click", clicked);
+    // <<< FIX: make center clicks a no-op so they do not re-run `clicked()` and break link interactivity
+    .on("click", event => {
+      // stop propagation so outer handlers don't receive this click
+      event.stopPropagation();
+    });
 
   // --- CENTER RING (always visible) ---
   const arrowRadius = radius * 0.8;
