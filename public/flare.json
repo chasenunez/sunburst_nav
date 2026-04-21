@@ -15,12 +15,6 @@
           "size": 150,
           "hovertext": "Integrated literature search",
           "link": "<a href='https://www.lib4ri.ch/search?find='></a>"
-        },
-        {
-          "name": "Data",
-          "size": 150,
-          "hovertext": "Data search across repositories",
-          "link": "<a href='https://www.lib4ri.ch/discover-data'></a>"
         }
       ]
     },
@@ -72,12 +66,6 @@
           "size": 150,
           "hovertext": "Version control (Git + GitLab)",
           "link": "<a href='https://www.lib4ri.ch/version-control'></a>"
-        },
-        {
-          "name": "Text Data Mining",
-          "size": 150,
-          "hovertext": "Legally Using Unstructured Text Data",
-          "link": "<a href='https://www.lib4ri.ch/textdatamining'></a>"
         }
       ]
     },
@@ -95,18 +83,6 @@
           "size": 150,
           "hovertext": "Long-term data preservation",
           "link": "<a href='https://www.lib4ri.ch/publishing-data'></a>"
-        },
-        {
-          "name": "Sensitive Data",
-          "size": 150,
-          "hovertext": "Sensitive data handling & ethics",
-          "link": "<a href='https://www.lib4ri.ch/sensitive-data'></a>"
-        },
-        {
-          "name": "Increasing Impact",
-          "size": 150,
-          "hovertext": "publish & share data for maximum engagement",
-          "link": "<a href='https://www.lib4ri.ch/increasing-impact'></a>"
         }
       ]
     }

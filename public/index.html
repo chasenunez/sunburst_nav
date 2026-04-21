@@ -69,7 +69,7 @@ d3.json("flare.json").then(data => {
   const format = d3.format(",d");
 
   // Toggle: when true, show both depths immediately; when false, show only depth 1 and reveal depth 2 on click
-  const SHOW_ALL_TO_BEGIN = true;
+  const SHOW_ALL_TO_BEGIN = false;
 
   const customColors = ["#002640", "#005564", "#00918A", "#8ECD99", "#578261", "#D3C88F"];
   const color = d3.scaleOrdinal().range(customColors);
