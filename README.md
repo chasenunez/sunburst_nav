@@ -3,6 +3,9 @@
 This is an interactive D3.js sunburst diagram showcasing the Research Data Management (RDM) services offered by Lib4RI and the four research institutes within the ETH Domain: Eawag, Empa, PSI, and WSL.
 It has been made somewhat less interactive to fit with corprate identity of various entities, but you could take it and turn the interactions back on, if you wanted. 
 
+![nav_description](assets/RDM_NAV.png)
+
+
 This radial space-filling visualization was originally created by [John Stasko](https://sites.cc.gatech.edu/gvu/ii/sunburst/) and traditionally shows the [cumulative values of subtrees](https://eurostat.github.io/d3.sunburst/). It is commonly used to visualize nested objects, in large part becuase it shows the mass of hidden things in each subsection.
 
 ## Overview
@@ -19,16 +22,11 @@ There is quite a bit of overlap with the website erit large, so some trimming is
 
 ## Getting Started
 
-1. hosted version can be found here: 
-
-https://pages.gitlab.eawag.ch/rdm-nav-b7b63b/
-
-
-2. code was developed here: 
+code was developed here: 
 
 https://gitlab.eawag.ch/chase.nunez/rdm_sunburst
 
-3. D3.js inspiration can be found here:
+D3.js inspiration can be found here:
 https://observablehq.com/@d3
 https://observablehq.com/@d3/zoomable-sunburst
 
