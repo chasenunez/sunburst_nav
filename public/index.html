@@ -69,10 +69,54 @@ d3.json("flare.json").then(data => {
   const format = d3.format(",d");
 
   // Toggle: when true, show both depths immediately; when false, show only depth 1 and reveal depth 2 on click
-  const SHOW_ALL_TO_BEGIN = false;
+  const SHOW_ALL_TO_BEGIN = true;
 
-  const customColors = ["#002640", "#005564", "#00918A", "#8ECD99", "#578261", "#D3C88F"];
-  const color = d3.scaleOrdinal().range(customColors);
+  // ============================================================
+  // Visual config — edit these values to restyle the chart
+  // ============================================================
+  const CONFIG = {
+    // Arc fill palette (assigned to depth-1 ancestors in order)
+    colors: ["#002640", "#005564", "#00918A", "#8ECD99", "#578261", "#D3C88F"],
+
+    // Center decorative ring gradient
+    gradient: {
+      startColor: "#8ECD99",
+      endColor:   "#005564",
+      opacity:    0.6
+    },
+
+    // Arc fill-opacity by depth
+    arcOpacity: {
+      depth1:             0.4,  // depth-1 parents
+      depth2WithChildren: 0.5,  // depth-2 nodes that have children
+      depth2Leaf:         0.6   // depth-2 leaf nodes
+    },
+
+    // Label fill-opacity
+    labelOpacity: {
+      depth1:             0.3,  // depth-1 labels (initial render)
+      depth2WithChildren: 0.3,  // depth-2 labels with children (initial)
+      depth2Leaf:         0.6,  // depth-2 leaf labels (initial)
+      depth1Zoomed:       0.7,  // depth-1 labels after a zoom click
+      depth2Zoomed:       0.4,  // depth-2 labels after a zoom click
+      centerLabel:        0.6   // center text label
+    },
+
+    // Label font sizes per depth
+    fontSize: {
+      depth1:  "22px",
+      depth2:  "16px",
+      default: "11px"
+    },
+
+    // Label font weights per depth
+    fontWeight: {
+      depth1: "bold",
+      depth2: "normal"
+    }
+  };
+
+  const color = d3.scaleOrdinal().range(CONFIG.colors);
 
   const root = d3.hierarchy(data)
     .sum(d => d.size || 0);
@@ -101,13 +145,13 @@ d3.json("flare.json").then(data => {
 
   gradient.append("stop")
     .attr("offset", "0%")
-    .attr("stop-color", "#8ECD99")
-    .attr("stop-opacity", 0.6);
+    .attr("stop-color", CONFIG.gradient.startColor)
+    .attr("stop-opacity", CONFIG.gradient.opacity);
 
   gradient.append("stop")
     .attr("offset", "100%")
-    .attr("stop-color", "#005564")
-    .attr("stop-opacity", 0.6);
+    .attr("stop-color", CONFIG.gradient.endColor)
+    .attr("stop-opacity", CONFIG.gradient.opacity);
 
   const arc = d3.arc()
     .startAngle(d => d.x0)
@@ -132,7 +176,7 @@ d3.json("flare.json").then(data => {
         return color(ancestor.data.name);
       })
       // Show only level 1 at first (depth 1 visible, depth 2 hidden)
-      .attr("fill-opacity", d => d.depth === 1 ? 0.6 : (SHOW_ALL_TO_BEGIN ? (d.children ? 0.6 : 0.4) : 0))
+      .attr("fill-opacity", d => d.depth === 1 ? CONFIG.arcOpacity.depth1 : (SHOW_ALL_TO_BEGIN ? (d.children ? CONFIG.arcOpacity.depth2WithChildren : CONFIG.arcOpacity.depth2Leaf) : 0))
       // IMPORTANT: Depth-1 parents are intentionally non-clickable. Only depth-2 children may be clickable.
       .attr("pointer-events", d => (d.depth === 2 && SHOW_ALL_TO_BEGIN) ? "auto" : (d.depth === 2 ? "none" : "none"))
       .attr("d", d => arc(d.current));
@@ -240,13 +284,13 @@ d3.json("flare.json").then(data => {
     .data(visibleNodes)
     .join("text")
       .attr("dy", "0.35em")
-      .attr("fill-opacity", d => d.depth === 1 ? 0.6 : (SHOW_ALL_TO_BEGIN ? (d.children ? 0.6 : 0.4) : 0))
+      .attr("fill-opacity", d => d.depth === 1 ? CONFIG.labelOpacity.depth1 : (SHOW_ALL_TO_BEGIN ? (d.children ? CONFIG.labelOpacity.depth2WithChildren : CONFIG.labelOpacity.depth2Leaf) : 0))
       .attr("transform", d => labelTransform(d.current))
-      .style("font-weight", d => d.depth === 1 ? "bold" : "normal")
+      .style("font-weight", d => d.depth === 1 ? CONFIG.fontWeight.depth1 : CONFIG.fontWeight.depth2)
       .style("font-size", d => {
-        if (d.depth === 1) return "22px";
-        if (d.depth === 2) return "16px";
-        return "11px";
+        if (d.depth === 1) return CONFIG.fontSize.depth1;
+        if (d.depth === 2) return CONFIG.fontSize.depth2;
+        return CONFIG.fontSize.default;
       })
       .text(d => d.data.name);
 
@@ -282,7 +326,7 @@ d3.json("flare.json").then(data => {
   centerGroup.append("text")
     .attr("class", "center-label")
     .attr("y", 5)
-    .attr("fill-opacity", 0.6)
+    .attr("fill-opacity", CONFIG.labelOpacity.centerLabel)
     .text(""); // placeholder
 
   // --- Add a Font Awesome home icon inside an SVG foreignObject ---
@@ -341,7 +385,7 @@ d3.json("flare.json").then(data => {
         return +this.getAttribute("fill-opacity") || arcVisible(d.target);
       })
       .attr("fill-opacity", d => {
-        return d.target.depth === 1 ? 0.6 : arcVisible(d.target) ? (d.children ? 0.6 : 0.4) : 0;
+        return d.target.depth === 1 ? CONFIG.arcOpacity.depth1 : arcVisible(d.target) ? (d.children ? CONFIG.arcOpacity.depth2WithChildren : CONFIG.arcOpacity.depth2Leaf) : 0;
       })
       // keep depth-1 non-clickable; only depth-2 that are visible get pointer-events:"auto"
       .attr("pointer-events", d => {
@@ -357,7 +401,7 @@ d3.json("flare.json").then(data => {
       .attr("dy", "0.35em")
       .attr("fill-opacity", d => {
         if (!labelVisible(d.target)) return 0;
-        return d.target.depth === 1 ? 0.7 : 0.4;
+        return d.target.depth === 1 ? CONFIG.labelOpacity.depth1Zoomed : CONFIG.labelOpacity.depth2Zoomed;
       })
       .attr("transform", d => labelTransform(d.current));
   }
